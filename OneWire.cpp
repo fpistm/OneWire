@@ -184,7 +184,9 @@ uint8_t OneWire::reset(void)
 	delayMicroseconds(480);
 	noInterrupts();
 	DIRECT_MODE_INPUT(reg, mask);	// allow it to float
+	interrupts();
 	delayMicroseconds(70);
+	noInterrupts();
 	r = !DIRECT_READ(reg, mask);
 	interrupts();
 	delayMicroseconds(410);
@@ -204,7 +206,9 @@ void OneWire::write_bit(uint8_t v)
 		noInterrupts();
 		DIRECT_WRITE_LOW(reg, mask);
 		DIRECT_MODE_OUTPUT(reg, mask);	// drive output low
+		interrupts();
 		delayMicroseconds(10);
+		noInterrupts();
 		DIRECT_WRITE_HIGH(reg, mask);	// drive output high
 		interrupts();
 		delayMicroseconds(55);
@@ -212,7 +216,9 @@ void OneWire::write_bit(uint8_t v)
 		noInterrupts();
 		DIRECT_WRITE_LOW(reg, mask);
 		DIRECT_MODE_OUTPUT(reg, mask);	// drive output low
+		interrupts();
 		delayMicroseconds(65);
+		noInterrupts();
 		DIRECT_WRITE_HIGH(reg, mask);	// drive output high
 		interrupts();
 		delayMicroseconds(5);
@@ -232,9 +238,13 @@ uint8_t OneWire::read_bit(void)
 	noInterrupts();
 	DIRECT_MODE_OUTPUT(reg, mask);
 	DIRECT_WRITE_LOW(reg, mask);
+	interrupts();
 	delayMicroseconds(3);
+	noInterrupts();
 	DIRECT_MODE_INPUT(reg, mask);	// let pin float, pull up will raise
+	interrupts();
 	delayMicroseconds(10);
+	noInterrupts();
 	r = DIRECT_READ(reg, mask);
 	interrupts();
 	delayMicroseconds(53);
